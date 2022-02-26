@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,6 +10,11 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 
+=======
+using System.Threading;
+using System.Threading.Tasks;
+
+>>>>>>> minor changes
 using DotnetDiscordBotBase.Config;
 
 using Microsoft.Extensions.Hosting;
@@ -77,9 +85,48 @@ namespace DotnetDiscordBotBase.Services
             return Task.CompletedTask;
         }
 
-        private Task OnMessageReceived(SocketMessage arg)
+        private async Task OnMessageReceived(SocketMessage msg)
+        {        
+            if (msg.Author.IsBot ||
+                msg.Source != MessageSource.User ||
+                msg is not SocketUserMessage)
+            {
+                return;
+            }
+
+            var msgCmdArg = ReadMessageCommandAndArgument(msg);
+
+            if (msgCmdArg is not null)
+            {
+                logger.LogInformation($"correctly identified command as: {msgCmdArg.Item2} with argument {msgCmdArg.Item3}");
+
+                await commandService.ExecuteAsync(
+                    new SocketCommandContext(discordClient, msgCmdArg.Item1),
+                    msgCmdArg.Item3,
+                    botBaseConfig.Services
+                );
+            }
+        }
+
+        private Tuple<SocketUserMessage, string, string> ReadMessageCommandAndArgument(SocketMessage msg)
         {
-            throw new NotImplementedException();
+            if (msg is not SocketUserMessage)
+            {
+                return null;
+            }
+
+            var message = msg as SocketUserMessage;
+
+            var match = Regex.Match(message.Content, @"^!\w{3,15}\s{0,}", RegexOptions.IgnoreCase);
+
+            if (match.Success)
+            {
+                var argument = message.Content.Substring(match.Length);
+
+                return new Tuple<SocketUserMessage, string, string>(message, match.Value, argument);
+            }
+
+            return null;
         }
 
         private Task OnCommandExecuted(Optional<CommandInfo> arg1, ICommandContext arg2, IResult arg3)
