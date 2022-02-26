@@ -10,6 +10,10 @@ namespace DotnetDiscordBotBase.Config
         public BotBaseConfig(IConfiguration configuration,
             IHostEnvironment environment, IServiceProvider services)
         {
+            this.configuration = configuration;
+            this.environment = environment;
+            this.services = services;
+
             ReadConfig();
         }
 
@@ -18,12 +22,12 @@ namespace DotnetDiscordBotBase.Config
             if(this.environment.IsDevelopment())
             {
                 botToken = configuration[Constants.DevelopmentBotToken];
-                botPasswd = configuration[Constants.DevelopmentBotPasswd];
+                // botPasswd = configuration[Constants.DevelopmentBotPasswd];
             }
             else
             {
                 botToken = configuration[Constants.ProductionBotToken];
-                botPasswd = configuration[Constants.ProductionBotPasswd];
+                // botPasswd = configuration[Constants.ProductionBotPasswd];
             }
         }
 
@@ -41,6 +45,13 @@ namespace DotnetDiscordBotBase.Config
 
         private string botPasswd;
         public string BotPasswd { get { return botPasswd; } private set { botPasswd = value; } }
+
+        private bool diagnosticsMode;
+        public bool DiagnosticsMode
+        {
+            get { return diagnosticsMode; }
+            set { diagnosticsMode = value; }
+        }
 
         public bool AllowInnerCommands => !string.IsNullOrEmpty(botPasswd);
     }

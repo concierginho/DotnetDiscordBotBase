@@ -79,7 +79,7 @@ namespace DotnetDiscordBotBase.Services
         }
 
         private async Task OnMessageReceived(SocketMessage msg)
-        {        
+        {
             if (msg.Author.IsBot ||
                 msg.Source != MessageSource.User ||
                 msg is not SocketUserMessage)
@@ -122,9 +122,26 @@ namespace DotnetDiscordBotBase.Services
             return null;
         }
 
-        private Task OnCommandExecuted(Optional<CommandInfo> arg1, ICommandContext arg2, IResult arg3)
+        private async Task OnCommandExecuted(Optional<CommandInfo> command, ICommandContext context, IResult result)
         {
-            throw new NotImplementedException();
+            if (!command.IsSpecified)
+            {
+                return;
+            }
+
+            if (botBaseConfig.DiagnosticsMode)
+            {
+                if (result.IsSuccess)
+                {
+                    await context.Message.AddReactionAsync(new Emoji("🔆"));
+                    logger.LogInformation($"command has been executed successfully: {command.Value.Name}");
+                }
+                else
+                {
+                    await context.Message.AddReactionAsync(new Emoji("🌧️"));
+                    logger.LogError($"unable to execute command: {command.Value.Name} due to: {result.ErrorReason}");
+                }
+            }
         }
     }
 }
