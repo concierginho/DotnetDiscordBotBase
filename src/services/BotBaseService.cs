@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -77,14 +78,70 @@ namespace DotnetDiscordBotBase.Services
             return Task.CompletedTask;
         }
 
-        private Task OnMessageReceived(SocketMessage arg)
+        private async Task OnMessageReceived(SocketMessage msg)
         {
-            throw new NotImplementedException();
+            if (msg.Author.IsBot ||
+                msg.Source != MessageSource.User ||
+                msg is not SocketUserMessage)
+            {
+                return;
+            }
+
+            var msgCmdArg = ReadMessageCommandAndArgument(msg);
+
+            if (msgCmdArg is not null)
+            {
+                logger.LogInformation($"correctly identified command as: {msgCmdArg.Item2} with argument {msgCmdArg.Item3}");
+
+                await commandService.ExecuteAsync(
+                    new SocketCommandContext(discordClient, msgCmdArg.Item1),
+                    msgCmdArg.Item3,
+                    botBaseConfig.Services
+                );
+            }
         }
 
-        private Task OnCommandExecuted(Optional<CommandInfo> arg1, ICommandContext arg2, IResult arg3)
+        private Tuple<SocketUserMessage, string, string> ReadMessageCommandAndArgument(SocketMessage msg)
         {
-            throw new NotImplementedException();
+            if (msg is not SocketUserMessage)
+            {
+                return null;
+            }
+
+            var message = msg as SocketUserMessage;
+
+            var match = Regex.Match(message.Content, @"^!\w{3,15}\s{0,}", RegexOptions.IgnoreCase);
+
+            if (match.Success)
+            {
+                var argument = message.Content.Substring(match.Length);
+
+                return new Tuple<SocketUserMessage, string, string>(message, match.Value, argument);
+            }
+
+            return null;
+        }
+
+        private async Task OnCommandExecuted(Optional<CommandInfo> command, ICommandContext context, IResult result)
+        {
+            if (!command.IsSpecified)
+            {
+                return;
+            }
+
+            if (botBaseConfig.DiagnosticsMode)
+            {
+                if (result.IsSuccess)
+                {
+                    await context.Message.AddReactionAsync(new Emoji("🔆"));
+                    logger.LogInformation($"command has been executed successfully: {command.Value.Name}");
+                }
+                else
+                {
+                    await context.Message.AddReactionAsync(new Emoji("🌧️"));
+                    logger.LogError($"unable to execute command: {command.Value.Name} due to: {result.ErrorReason}");
+                }
+            }
         }
     }
 }
