@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -10,11 +8,6 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 
-=======
-using System.Threading;
-using System.Threading.Tasks;
-
->>>>>>> minor changes
 using DotnetDiscordBotBase.Config;
 
 using Microsoft.Extensions.Hosting;
