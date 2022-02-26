@@ -4,7 +4,7 @@ namespace DotnetDiscordBotBase
     {
         public const string DevelopmentBotToken = "devBotToken";
         public const string ProductionBotToken = "prodBotToken";
-        // public const string DevelopmentBotPasswd = "devBotPasswd";
-        // public const string ProductionBotPasswd = "prodBotPasswd";
+        public const string DevelopmentBotPasswd = "devBotPasswd";
+        public const string ProductionBotPasswd = "prodBotPasswd";
     }
 }

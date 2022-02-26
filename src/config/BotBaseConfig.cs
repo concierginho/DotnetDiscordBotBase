@@ -22,12 +22,12 @@ namespace DotnetDiscordBotBase.Config
             if(this.environment.IsDevelopment())
             {
                 botToken = configuration[Constants.DevelopmentBotToken];
-                // botPasswd = configuration[Constants.DevelopmentBotPasswd];
+                botPasswd = configuration[Constants.DevelopmentBotPasswd];
             }
             else
             {
                 botToken = configuration[Constants.ProductionBotToken];
-                // botPasswd = configuration[Constants.ProductionBotPasswd];
+                botPasswd = configuration[Constants.ProductionBotPasswd];
             }
         }
 

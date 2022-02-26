@@ -45,13 +45,6 @@ namespace DotnetDiscordBotBase.Services
 
             if (botBaseConfig.AllowInnerCommands)
             {
-                //TODO: passwd for bot in order to allow inner commands
-                // inner commands means doing changes in way bot is functioning
-                // e.g. put it into diagnostics mode
-                // for shards it could be putting single shard inside diagnostics mode etc.
-                // this is something to think about, not necessarily a requirement
-                // 1. create mechanism to distinguish normal cmd from inner cmd
-                // 2. create class InnerCommands
                 await commandService.AddModulesAsync(Assembly.GetEntryAssembly(), botBaseConfig.Services);
             }
 
