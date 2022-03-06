@@ -19,3 +19,4 @@ For development purposes these variables can be different to prevent breaking co
     - [ ] remove module containing configurator commands after specific time
 - [ ] tests
 - [ ] pipeline
+- [ ] create nuget package through github actions
