@@ -15,44 +15,30 @@ using Microsoft.Extensions.Logging;
 
 namespace DotnetDiscordBotBase.Services
 {
-    public class BotBaseService : BackgroundService
+    public class BotBaseService : IHostedService
     {
         public BotBaseService(BotBaseConfig botBaseConfig,
             DiscordSocketClient discordClient,
             CommandService commandService,
+            Barrier barrier,
             ILogger<BotBaseService> logger)
         {
             this.botBaseConfig = botBaseConfig;
             this.discordClient = discordClient;
             this.commandService = commandService;
+            this.barrier = barrier;
             this.logger = logger;
+
+            barrier.AddParticipant();
         }
 
         private readonly BotBaseConfig botBaseConfig;
         private readonly DiscordSocketClient discordClient;
         private readonly ILogger<BotBaseService> logger;
+        private readonly Barrier barrier;
 
         private CommandService commandService;
         public CommandService CommandService { get { return commandService; } }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            discordClient.Ready += OnReady;
-            discordClient.Connected += OnConnected;
-            discordClient.MessageReceived += OnMessageReceived;
-
-            commandService.CommandExecuted += OnCommandExecuted;
-
-            if (botBaseConfig.AllowInnerCommands)
-            {
-                await commandService.AddModulesAsync(Assembly.GetEntryAssembly(), botBaseConfig.Services);
-            }
-
-            await discordClient.LoginAsync(TokenType.Bot, botBaseConfig.BotToken);
-            await discordClient.StartAsync();
-
-            await Task.Delay(-1);
-        }
 
         private async Task OnReady()
         {
@@ -66,6 +52,8 @@ namespace DotnetDiscordBotBase.Services
             if (discordClient.ConnectionState.Equals(ConnectionState.Connected))
             {
                 logger.LogInformation("discord client changed its state and is now: connected");
+                logger.LogInformation("synchronizing with other services...");
+                barrier.SignalAndWait();
             }
 
             return Task.CompletedTask;
@@ -135,6 +123,31 @@ namespace DotnetDiscordBotBase.Services
                     logger.LogError($"unable to execute command: {command.Value.Name} due to: {result.ErrorReason}");
                 }
             }
+        }
+
+        public async Task StartAsync(CancellationToken cancellationToken)
+        {
+            discordClient.Ready += OnReady;
+            discordClient.Connected += OnConnected;
+            discordClient.MessageReceived += OnMessageReceived;
+
+            commandService.CommandExecuted += OnCommandExecuted;
+
+            if (botBaseConfig.AllowInnerCommands)
+            {
+                await commandService.AddModulesAsync(Assembly.GetEntryAssembly(), botBaseConfig.Services);
+            }
+
+            await discordClient.LoginAsync(TokenType.Bot, botBaseConfig.BotToken);
+            await discordClient.StartAsync();
+
+            await Task.Delay(-1);
+        }
+
+        public async Task StopAsync(CancellationToken cancellationToken)
+        {
+            await discordClient.StopAsync();
+            await discordClient.DisposeAsync();
         }
     }
 }
