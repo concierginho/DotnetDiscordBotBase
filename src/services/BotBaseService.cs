@@ -20,22 +20,17 @@ namespace DotnetDiscordBotBase.Services
         public BotBaseService(BotBaseConfig botBaseConfig,
             DiscordSocketClient discordClient,
             CommandService commandService,
-            Barrier barrier,
             ILogger<BotBaseService> logger)
         {
             this.botBaseConfig = botBaseConfig;
             this.discordClient = discordClient;
             this.commandService = commandService;
-            this.barrier = barrier;
             this.logger = logger;
-
-            barrier.AddParticipant();
         }
 
         private readonly BotBaseConfig botBaseConfig;
         private readonly DiscordSocketClient discordClient;
         private readonly ILogger<BotBaseService> logger;
-        private readonly Barrier barrier;
 
         private CommandService commandService;
         public CommandService CommandService { get { return commandService; } }
@@ -53,7 +48,6 @@ namespace DotnetDiscordBotBase.Services
             {
                 logger.LogInformation("discord client changed its state and is now: connected");
                 logger.LogInformation("synchronizing with other services...");
-                barrier.SignalAndWait();
             }
 
             return Task.CompletedTask;
