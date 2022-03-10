@@ -1,16 +1,31 @@
-## DotnetDiscordBotBase v1.0.2
-In order to make it work properly you need to instantiate all of classes required by `BotBaseService` constructor and add `BotBaseService` as hosted service to your application.
-Barrier can be shared across multiple hosted services that use `DiscordSocketClient` in order to synchronize connection, which is attempted by `BotBaseService`. After connection `DiscordSocketClient` is ready to action!
+## DotnetDiscordBotBase
+Library created in order to save time writing bot with usage of *.NET*.
+## How to use it?
+You only need to instantiate `BotBaseService` and start it.
+## What does it do?
+The library loads default configuration e.g. bot token and creates default mechanism for connection and reading commands from channels.
+It is capable of understanding commands, reading its names and passed arguments.
+This allow us to create new command classed with ease.
 
-### Production Environment
-To configure bot appropriately environment variables need to be set:
-- PROD_BOT_TOKEN
-- PROD_BOT_PASSWD (*optional*)
+---
+## Usage details
+The library uses environment variables to inject sensitive data. It does this because each bot needs a unique token that should not be shared. It also means that many instances can be created on single machine because each one of them can use different environment variable names.
+To rename an environment variable, simply change the values in the following files:
 
-### Development Environment
-For development purposes these variables can be different to prevent breaking connection of existing production instances:
-- DEV_BOT_TOKEN
-- DEV_BOT_PASSWD (*optional*)
+**1. Production Environment**
+
+    appsettings.Production.json
+**2. Development Environment**
+
+    appsettings.Development.json
+**Path to Bot Token property:**
+
+    "Bot:TokenVariableName"
+**Path to Bot Passwd property:**
+
+    "Bot:PasswdVariableName"
+
+---
 
 ### Things to do:
 - [x] make environment variable names more flexible

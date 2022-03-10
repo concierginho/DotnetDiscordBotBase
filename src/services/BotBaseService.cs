@@ -39,25 +39,28 @@ namespace DotnetDiscordBotBase.Services
             barrier.AddParticipant();
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            discordClient.Ready += OnReady;
-            discordClient.Connected += OnConnected;
-            discordClient.MessageReceived += OnMessageReceived;
-
-            commandService.CommandExecuted += OnCommandExecuted;
-
-            if (botBaseConfig.AllowInnerCommands)
+            Task.Run(async () =>
             {
-                await commandService.AddModulesAsync(Assembly.GetEntryAssembly(), botBaseConfig.Services);
-            }
+                discordClient.Ready += OnReady;
+                discordClient.Connected += OnConnected;
+                discordClient.MessageReceived += OnMessageReceived;
 
-            await discordClient.LoginAsync(TokenType.Bot, botBaseConfig.BotToken);
-            await discordClient.StartAsync();
+                commandService.CommandExecuted += OnCommandExecuted;
 
-            barrier.SignalAndWait();
+                if (botBaseConfig.AllowInnerCommands)
+                {
+                    await commandService.AddModulesAsync(Assembly.GetEntryAssembly(), botBaseConfig.Services);
+                }
 
-            await Task.Delay(-1);
+                await discordClient.LoginAsync(TokenType.Bot, botBaseConfig.BotToken);
+                await discordClient.StartAsync();
+
+                barrier.SignalAndWait();
+            });
+
+            return Task.Delay(-1);
         }
 
         private async Task OnReady()

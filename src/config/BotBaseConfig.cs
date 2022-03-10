@@ -7,6 +7,9 @@ namespace DotnetDiscordBotBase.Config
 {
     public class BotBaseConfig
     {
+        private string botTokenVariableName;
+        private string botPasswdVariableName;
+
         public BotBaseConfig(IConfiguration configuration,
             IHostEnvironment environment,
             IServiceProvider services)
@@ -15,21 +18,20 @@ namespace DotnetDiscordBotBase.Config
             this.environment = environment;
             this.services = services;
 
+            ReadSettings();
             ReadConfig();
+        }
+
+        private void ReadSettings()
+        {
+            this.botTokenVariableName = this.Configuration["Bot:TokenVariableName"];
+            this.botPasswdVariableName = this.Configuration["Bot:PasswdVariableName"];
         }
 
         private void ReadConfig()
         {
-            if (this.environment.IsDevelopment())
-            {
-                botToken = configuration[DEV_BOT_TOKEN];
-                botPasswd = configuration[DEV_BOT_PASSWD];
-            }
-            else
-            {
-                botToken = configuration[PROD_BOT_TOKEN];
-                botPasswd = configuration[PROD_BOT_PASSWD];
-            }
+            botToken = configuration[this.botTokenVariableName];
+            botPasswd = configuration[this.botPasswdVariableName];
         }
 
         private IConfiguration configuration;
@@ -55,10 +57,5 @@ namespace DotnetDiscordBotBase.Config
         }
 
         public bool AllowInnerCommands => !string.IsNullOrEmpty(botPasswd);
-
-        public const string DEV_BOT_TOKEN = "DEV_BOT_TOKEN";
-        public const string PROD_BOT_TOKEN = "PROD_BOT_TOKEN";
-        public const string DEV_BOT_PASSWD = "DEV_BOT_PASSWD";
-        public const string PROD_BOT_PASSWD = "PROD_BOT_PASSWD";
     }
 }
