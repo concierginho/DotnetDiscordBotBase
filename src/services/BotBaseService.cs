@@ -20,24 +20,20 @@ namespace DotnetDiscordBotBase.Services
         private readonly BotBaseConfig botBaseConfig;
         private readonly DiscordSocketClient discordClient;
         private readonly ILogger<BotBaseService> logger;
-        private readonly Barrier barrier;
-        private CommandService commandService;
-        public CommandService CommandService { get { return commandService; } }
+        private readonly CommandService commandService;
 
         public BotBaseService(BotBaseConfig botBaseConfig,
             DiscordSocketClient discordClient,
             CommandService commandService,
-            Barrier barrier,
             ILogger<BotBaseService> logger)
         {
             this.botBaseConfig = botBaseConfig;
             this.discordClient = discordClient;
             this.commandService = commandService;
-            this.barrier = barrier;
             this.logger = logger;
-
-            barrier.AddParticipant();
         }
+
+        public CommandService CommandService { get { return commandService; } }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -56,8 +52,6 @@ namespace DotnetDiscordBotBase.Services
 
                 await discordClient.LoginAsync(TokenType.Bot, botBaseConfig.BotToken);
                 await discordClient.StartAsync();
-
-                barrier.SignalAndWait();
             });
 
             return Task.Delay(-1);

@@ -10,14 +10,15 @@ namespace DotnetDiscordBotBase.Commands
 {
     public class Configurator : ModuleBase
     {
+        private readonly ILogger<Configurator> logger;
+        private readonly BotBaseConfig configuration;
+
         public Configurator(BotBaseConfig configuration,
             ILogger<Configurator> logger)
         {
             this.configuration = configuration;
+            this.logger = logger;
         }
-
-        private readonly BotBaseConfig configuration;
-        private readonly ILogger<Configurator> logger;
 
         public async Task OnLogin([Remainder] string passwd)
         {

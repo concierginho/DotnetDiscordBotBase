@@ -27,7 +27,7 @@ To rename an environment variable, simply change the values in the following fil
 
 ---
 
-### Things to do:
+### TODO:
 - [x] make environment variable names more flexible
 - [ ] configurator commands
     - [x] authentication mechanism for enabling configurator commands
