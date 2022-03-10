@@ -20,12 +20,13 @@ namespace DotnetDiscordBotBase.Commands
             this.logger = logger;
         }
 
-        public async Task OnLogin([Remainder] string passwd)
+        public Task OnLogin([Remainder] string passwd)
         {
             if (passwd.Equals(configuration.BotPasswd))
             {
                 logger.LogInformation("configurator has been successfully authenticated");
             }
+            return Task.CompletedTask;
         }
     }
 }
