@@ -35,3 +35,4 @@ To rename an environment variable, simply change the values in the following fil
 - [ ] tests
 - [ ] pipeline
 - [ ] create nuget package through github actions
+- [ ] create&push nuget package with 1.0.5 version
