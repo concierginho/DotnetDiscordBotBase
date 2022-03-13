@@ -24,3 +24,16 @@ To rename an environment variable, simply change the values in the following fil
 **Path to Bot Passwd property:**
 
     "Bot:PasswdVariableName"
+If you do not have such files, you will need to create them.
+Example ***appsettings.Development.json*** file:
+
+    {
+        "Logging": {
+            "LogLevel": {
+                "Default": "Information"
+         }
+        },
+        "Bot": {
+            "TokenVariableName": "DEV_BOT_TOKEN",
+            "PasswdVariableName": "DEV_BOT_PASSWD"
+    }
