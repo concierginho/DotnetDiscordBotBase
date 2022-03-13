@@ -24,15 +24,3 @@ To rename an environment variable, simply change the values in the following fil
 **Path to Bot Passwd property:**
 
     "Bot:PasswdVariableName"
-
----
-
-### TODO:
-- [x] make environment variable names more flexible
-- [ ] configurator commands
-    - [x] authentication mechanism for enabling configurator commands
-    - [ ] remove module containing configurator commands after specific time
-- [ ] tests
-- [ ] pipeline
-- [ ] create nuget package through github actions
-- [ ] create&push nuget package with 1.0.5 version
