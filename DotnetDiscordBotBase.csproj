@@ -9,7 +9,7 @@
     <Description>Library created in order to save time writing bot with usage of .NET.</Description>
     <RespositoryType>git</RespositoryType>
     <PackageTags>Discord Bot</PackageTags>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
     <Authors>concierginho</Authors>
     <Company>Call me inc.</Company>
   </PropertyGroup>
