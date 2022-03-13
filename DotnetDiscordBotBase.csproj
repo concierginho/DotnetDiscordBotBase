@@ -2,11 +2,26 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <PackageId>DotnetDiscordBotBase</PackageId>
+    <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/concierginho/DotnetDiscordBotBase</RepositoryUrl>
+    <Description>Library created in order to save time writing bot with usage of .NET.</Description>
+    <RespositoryType>git</RespositoryType>
+    <PackageTags>Discord Bot</PackageTags>
+    <Version>1.0.6</Version>
+    <Authors>concierginho</Authors>
+    <Company>Call me inc.</Company>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="3.2.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ReadMe.md" Pack="true" PackagePath="/"/>
+    <None Include="LICENSE" Pack="true" PackagePath="/"/>
   </ItemGroup>
 
 </Project>
