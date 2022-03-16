@@ -26,7 +26,7 @@ To rename an environment variable, simply change the values in the following fil
     "Bot:PasswdVariableName"
 If you do not have such files, you will need to create them.
 Example ***appsettings.Development.json*** file:
-
+```json
     {
         "Logging": {
             "LogLevel": {
@@ -37,7 +37,7 @@ Example ***appsettings.Development.json*** file:
             "TokenVariableName": "DEV_BOT_TOKEN",
             "PasswdVariableName": "DEV_BOT_PASSWD"
     }
-
+```
 ---
 
 ## Adding commands
