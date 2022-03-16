@@ -36,6 +36,7 @@ Example ***appsettings.Development.json*** file:
     "Bot": {
         "TokenVariableName": "DEV_BOT_TOKEN",
         "PasswdVariableName": "DEV_BOT_PASSWD"
+    }
 }
 ```
 ---
