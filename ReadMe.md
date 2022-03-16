@@ -37,3 +37,21 @@ Example ***appsettings.Development.json*** file:
             "TokenVariableName": "DEV_BOT_TOKEN",
             "PasswdVariableName": "DEV_BOT_PASSWD"
     }
+
+---
+
+## Adding commands
+To add your custom class with commands you need to create class with chosen name and inherit from `ModuleBase`.
+
+e.g. you want to have command `!MyBot help`. Your class will look this:
+
+```
+public class MyBot : ModuleBase
+{
+    [Command("help")]
+    public Task OnHelp()
+    {
+        await this.Context.Channel.SendMessageAsync("help...");
+    }
+}
+```

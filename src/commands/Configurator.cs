@@ -20,6 +20,7 @@ namespace DotnetDiscordBotBase.Commands
             this.logger = logger;
         }
 
+        [Command("login")]
         public Task OnLogin([Remainder] string passwd)
         {
             if (passwd.Equals(configuration.BotPasswd))
