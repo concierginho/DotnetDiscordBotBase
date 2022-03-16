@@ -27,16 +27,16 @@ To rename an environment variable, simply change the values in the following fil
 If you do not have such files, you will need to create them.
 Example ***appsettings.Development.json*** file:
 ```json
-    {
-        "Logging": {
-            "LogLevel": {
-                "Default": "Information"
-         }
-        },
-        "Bot": {
-            "TokenVariableName": "DEV_BOT_TOKEN",
-            "PasswdVariableName": "DEV_BOT_PASSWD"
-    }
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information"
+        }
+    },
+    "Bot": {
+        "TokenVariableName": "DEV_BOT_TOKEN",
+        "PasswdVariableName": "DEV_BOT_PASSWD"
+}
 ```
 ---
 
