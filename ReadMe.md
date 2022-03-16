@@ -55,3 +55,10 @@ public class MyBot : ModuleBase
     }
 }
 ```
+
+To make it work properly you will one more step. Somewhere in your application you will need to add your commands using reflection:
+```
+await commandService.AddModulesAsync(Assembly.GetEntryAssembly(), botBaseConfig.Services);
+```
+where
+`commandService` is of type `Discord.Commands.CommandService` and `botBaseConfig.Services` is of type `IServiceProvider`. You can instantiate BotBaseConfig and then use property from this object named `Services`.
