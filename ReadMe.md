@@ -45,7 +45,7 @@ To add your custom class with commands you need to create class with chosen name
 
 e.g. you want to have command `!MyBot help`. Your class will look this:
 
-```
+```csharp
 public class MyBot : ModuleBase
 {
     [Command("help")]
@@ -57,7 +57,7 @@ public class MyBot : ModuleBase
 ```
 
 To make it work properly you will one more step. Somewhere in your application you will need to add your commands using reflection:
-```
+```csharp
 await commandService.AddModulesAsync(Assembly.GetEntryAssembly(), botBaseConfig.Services);
 ```
 where
